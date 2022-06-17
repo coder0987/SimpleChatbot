@@ -9,7 +9,7 @@ import net.minecraft.util.ActionResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ExampleMod implements ModInitializer {
+public class Chatbot implements ModInitializer {
 	public static final Logger LOGGER = LoggerFactory.getLogger("modid");
 
 	@Override
@@ -20,19 +20,34 @@ public class ExampleMod implements ModInitializer {
 		MessageSendCallback.EVENT.register((MessageType type, Text message, MessageSender sender) -> {
 			//Do something
 			MinecraftClient mc = MinecraftClient.getInstance();
-			if (mc.player != null && sender != null)
-				mc.player.sendMessage(Text.of(sender.name().getString() + " will say: " + message.getString()));
-			else if (mc.player != null)
-				mc.player.sendMessage(Text.of( "Someone will say: " + message.getString()));
+			String senderName = "Someone";
+			if (sender != null)
+				senderName = sender.name().getString();
+
+			String sentMessage = message.getString();
+
+			if (mc.player != null) {
+				//This is where the chat bot goes
+				mc.player.sendMessage(Text.of( senderName + " will say: " + sentMessage));
+				//To send a message, use the above format
+				//mc.player.sendMessage is the function, start with that
+				//Then, open parentheses and insert the message in Text.of("message") style, before closing the parentheses
+				//It should look like
+				//mc.player.sendMessage(Text.of("Message"));
+				//Try starting by just uncommenting that line (delete the two slashes behind it) and changing what Message is, to something like Hello World or Hi
+			}
 			return ActionResult.PASS;
 		});
 		MessageReceiveCallback.EVENT.register((MessageType type, Text message, MessageSender sender) -> {
 			//Do something
 			MinecraftClient mc = MinecraftClient.getInstance();
-			if (mc.player != null && sender != null)
-				mc.player.sendMessage(Text.of(sender.name().getString() + " said: " + message.getString()));
-			else if (mc.player != null)
-				mc.player.sendMessage(Text.of( "Someone said: " + message.getString()));
+			String sentMessage = message.getString();
+			String senderName = "Someone";
+			if (sender != null)
+				senderName = sender.name().getString();
+			if (mc.player != null) {
+				mc.player.sendMessage(Text.of( senderName + " said: " + sentMessage));
+			}
 			return ActionResult.PASS;
 		});
 		LOGGER.info("Hello Fabric world!");

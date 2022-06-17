@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
-  "id": "modid",
+  "id": "simple-chatbot",
   "version": "${version}",
 
-  "name": "Example Mod",
-  "description": "This is an example description! Tell everyone what your mod is about!",
+  "name": "Simple Chat Bot",
+  "description": "This is a simple chatbot mod, meant to reply to the player's words",
   "authors": [
-    "Me!"
+    "TheLegoBros"
   ],
   "contact": {
     "homepage": "https://fabricmc.net/",
@@ -19,7 +19,7 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.fabricmc.example.ExampleMod"
+      "net.fabricmc.example.Chatbot"
     ]
   },
   "mixins": [

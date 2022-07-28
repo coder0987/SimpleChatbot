@@ -10,7 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class Chatbot implements ModInitializer {
-	public static final Logger LOGGER = LoggerFactory.getLogger("modid");
+	public static final Logger LOGGER = LoggerFactory.getLogger("tutorialmod");
 
 	@Override
 	public void onInitialize() {
@@ -27,14 +27,20 @@ public class Chatbot implements ModInitializer {
 			String sentMessage = message.getString();
 
 			if (mc.player != null) {
-				//This is where the chat bot goes
-				mc.player.sendMessage(Text.of( senderName + " will say: " + sentMessage));
-				//To send a message, use the above format
-				//mc.player.sendMessage is the function, start with that
-				//Then, open parentheses and insert the message in Text.of("message") style, before closing the parentheses
-				//It should look like
-				//mc.player.sendMessage(Text.of("Message"));
-				//Try starting by just uncommenting that line (delete the two slashes behind it) and changing what Message is, to something like Hello World or Hi
+				String[] redirect = {"sword","stab"};
+				String[] redirected = {"pointy stick","poke"};
+				for (int i=0; i<redirect.length;i++) {
+					while (sentMessage.contains(redirect[i])) {
+						int loc = sentMessage.indexOf(redirect[i]);
+						String sentMessageStart = sentMessage.substring(0,loc);
+						String sentMessageEnd = redirected[i] + sentMessage.substring(loc + redirect[i].length());
+						sentMessage = sentMessageStart + sentMessageEnd;
+					}
+				}
+				if (!sentMessage.equals(message.getString())) {
+					mc.player.sendMessage(Text.of("<" + senderName + "> " + sentMessage));
+					return ActionResult.FAIL;//Cancel the message send
+				}
 			}
 			return ActionResult.PASS;
 		});
@@ -47,6 +53,11 @@ public class Chatbot implements ModInitializer {
 				senderName = sender.name().getString();
 			if (mc.player != null) {
 				mc.player.sendMessage(Text.of( senderName + " said: " + sentMessage));
+				switch (sentMessage.toLowerCase()) {
+					case "hi" -> mc.player.sendMessage(Text.of("Hello There"));
+					case "hello there" -> mc.player.sendMessage(Text.of("General Kenobi"));
+					case "grievous" -> mc.player.sendMessage(Text.of("So you have chosen death?"));
+				}
 			}
 			return ActionResult.PASS;
 		});
